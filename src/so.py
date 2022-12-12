@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # encoding: utf-8
 #
 # Copyright (c) 2014 deanishe@deanishe.net
@@ -15,7 +16,7 @@ from __future__ import print_function, absolute_import
 from collections import namedtuple
 import functools
 import hashlib
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 from unicodedata import normalize
 import os
 import re
@@ -26,7 +27,7 @@ from workflow.background import run_in_background, is_running
 
 USER_AGENT = 'Alfred-StackOverflow/{version} ({url})'
 
-UPDATE_SETTINGS = {'github_slug': 'deanishe/alfred-stackoverflow'}
+
 
 ICON_ANSWERED = 'answered.png'
 ICON_UPDATE = 'update-available.png'
@@ -388,13 +389,7 @@ def do_sites(args):
 
 def do_search(args):
     """Script Filter to search StackExchange site."""
-    # Update available?
-    if wf.update_available:
-        wf.add_item(u'A newer version is available',
-                    u'↩ to install update',
-                    autocomplete='workflow:update',
-                    icon=ICON_UPDATE)
-
+    
     query = args['<query>'].strip()
     site_id = args['--site']
 
@@ -454,7 +449,7 @@ def main(wf):
 
     if not wf.cached_data_fresh(SITES_KEY, 86400) and not is_running('sites'):
         log.debug(u'Updating list of sites…')
-        run_in_background('sites', ('/usr/bin/python', 'so.py', 'cache-sites'))
+        run_in_background('sites', ('python3', 'so.py', 'cache-sites'))
 
     if args['search']:
         return do_search(args)
@@ -473,7 +468,7 @@ def main(wf):
 
 
 if __name__ == '__main__':
-    wf = Workflow3(help_url=HELP_URL,
-                   update_settings=UPDATE_SETTINGS)
+    wf = Workflow3(help_url=HELP_URL
+                )
     log = wf.logger
     sys.exit(wf.run(main))

@@ -2,3 +2,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.dist-info/
+.DS_Store
+*.pyc
+__pycache__
+prefs.plist
+lib
